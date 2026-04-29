@@ -729,10 +729,10 @@
           <small>Build Strength. Transform Yourself.</small>
         </div>
       </div>
-      <!-- <div class="nav-links">
+      <div class="nav-links">
         <a class="btn btn-secondary" href="index.html">← Registration</a>
         <div class="pill">Fee Payment</div>
-      </div> -->
+      </div>
     </div>
   </header>
 
@@ -761,8 +761,8 @@
 
           <!-- Toggle -->
           <div class="payment-toggle" style="margin-bottom:22px;">
-            <button type="button" class="toggle-btn active-monthly" id="toggleMonthly">Monthly Fee</button>
-            <button type="button" class="toggle-btn" id="toggleReg">Registration Fee</button>
+            <button type="button" class="toggle-btn active-monthly" id="toggleMonthly">📅 &nbsp;Monthly Fee</button>
+            <button type="button" class="toggle-btn" id="toggleReg">🏅 &nbsp;Registration Fee</button>
           </div>
 
           <form id="paymentForm">
@@ -1241,12 +1241,36 @@
     receiptModal.classList.remove("show");
   });
 
-  /* ── WhatsApp — open chat only, no pre-filled text ── */
+  /* ── WhatsApp — pre-filled message ── */
   document.getElementById("whatsappBtn").addEventListener("click", function () {
     if (!lastEntry) return;
     let raw = lastEntry.memberPhone.replace(/\D/g, "");
     if (raw.length === 10) raw = "91" + raw;
-    window.open("https://wa.me/" + raw, "_blank");
+
+    const isReg = lastEntry.mode === "reg";
+    const msg =
+`🏋️ *AP Enterprise Gym*
+━━━━━━━━━━━━━━━━━━
+*${isReg ? "Registration Receipt" : "Payment Receipt"}*
+Receipt No: ${lastEntry.receiptNo}
+━━━━━━━━━━━━━━━━━━
+👤 *Member:* ${lastEntry.memberName}
+📱 *Phone:* ${lastEntry.memberPhone}
+🎫 *Type:* ${lastEntry.memberType}
+${isReg ? "📋 *Fee:* Registration Fee" : `📅 *Month:* ${lastEntry.paymentMonth}`}
+🕐 *Date:* ${lastEntry.dateTimeLabel}
+━━━━━━━━━━━━━━━━━━
+💰 *Amount Paid: ₹${Number(lastEntry.amount).toLocaleString("en-IN")}*
+✅ Payment Confirmed
+━━━━━━━━━━━━━━━━━━
+📍 Tadubi Bazaar, Dohu Colony
+Near Old Petrol Pump, Senapati
+Manipur – 795104
+📞 +91-8810699710
+
+_Thank you for choosing AP Enterprise Gym! 💪_`;
+
+    window.open("https://wa.me/" + raw + "?text=" + encodeURIComponent(msg), "_blank");
   });
 
   receiptModal.addEventListener("click", e => {

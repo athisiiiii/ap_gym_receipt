@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Enterprise Gym | Monthly Fee Payment</title>
+  <link rel="icon" type="image/jpeg" href="ap.JPG">
+  <link rel="shortcut icon" type="image/jpeg" href="ap.JPG">
+  <link rel="apple-touch-icon" href="ap.JPG">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050505;
+      --surface: rgba(17, 17, 17, 0.88);
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #f6f3ef;
+      --muted: #b6aca4;
+      --red: #ff2323;
+      --gold: #ffcf70;
+      --green: #47d673;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Outfit", sans-serif;
+      font-size: 16px;
+      background:
+        radial-gradient(circle at top right, rgba(255, 35, 35, 0.12), transparent 24%),
+        linear-gradient(180deg, #0c0c0c 0%, #050505 55%, #090909 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.35), transparent 75%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .page { position: relative; z-index: 1; }
+
+    .container {
+      width: min(700px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .content-stack { display: grid; gap: 10px; justify-items: start; }
+
+    /* Topbar */
+    .topbar {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .topbar-inner {
+      width: min(1040px, calc(100% - 32px));
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 0;
+    }
+
+    .brand { display: flex; align-items: center; gap: 14px; }
+
+    .brand-logo {
+      width: 64px; height: 64px;
+      object-fit: contain;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 8px;
+      box-shadow: 0 16px 30px rgba(0,0,0,0.25);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 1.45rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .brand-text small {
+      color: var(--muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      font: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.55; transform: none; cursor: not-allowed; }
+
+    .btn-secondary {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #47d673, #28a855 75%);
+      box-shadow: 0 16px 40px rgba(71,214,115,0.25);
+      color: white;
+      width: 100%;
+      padding: 16px;
+      font-size: 1.05rem;
+    }
+
+    .btn-print {
+      border-color: rgba(255,207,112,0.4);
+      background: rgba(255,207,112,0.08);
+      color: var(--gold);
+    }
+
+    .btn-new {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+
+    /* Eyebrow */
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.68rem;
+    }
+
+    .pill {
+      border: 1px solid rgba(255,35,35,0.35);
+      background: rgba(255,35,35,0.08);
+      color: #ffd6d6;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      white-space: nowrap;
+    }
+
+    /* Payment Type Toggle */
+    .payment-toggle {
+      display: flex;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 5px;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .toggle-btn {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 13px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.22s ease;
+      letter-spacing: 0.03em;
+    }
+    .toggle-btn:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .toggle-btn.active-monthly {
+      background: linear-gradient(135deg, rgba(255,35,35,0.22), rgba(255,35,35,0.1));
+      border-color: rgba(255,35,35,0.5);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(255,35,35,0.18);
+    }
+    .toggle-btn.active-reg {
+      background: linear-gradient(135deg, rgba(255,207,112,0.22), rgba(255,207,112,0.08));
+      border-color: rgba(255,207,112,0.5);
+      color: var(--gold);
+      box-shadow: 0 4px 18px rgba(255,207,112,0.14);
+    }
+
+    /* Section panels */
+    .form-panel { display: none; }
+    .form-panel.active { display: contents; }
+
+    /* Typography */
+    h1, h2, h3 {
+      font-family: "Barlow Condensed", sans-serif;
+      text-transform: uppercase;
+      line-height: 0.95;
+    }
+
+    h1 { font-size: clamp(2.3rem, 6vw, 3.4rem); margin-bottom: 10px; }
+    .accent { color: var(--red); text-shadow: 0 0 24px rgba(255,35,35,0.28); }
+
+    .lead {
+      font-size: 1.05rem;
+      color: #e6dad1;
+      line-height: 1.72;
+    }
+
+    /* Page header */
+    .page-header { padding: 28px 0 20px; }
+
+    .page-header-inner {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 48px rgba(0,0,0,0.28);
+      backdrop-filter: blur(8px);
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header-inner::after {
+      content: "";
+      position: absolute;
+      right: -50px; top: -70px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,35,35,0.4), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 18px 48px rgba(0,0,0,0.28);
+      backdrop-filter: blur(8px);
+      padding: 28px;
+    }
+
+    /* Form */
+    .form-section { padding: 0 0 40px; }
+
+    form { display: grid; gap: 16px; }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field { display: grid; gap: 8px; }
+
+    .field label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.76rem;
+      color: #cfc0b7;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font: inherit;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: rgba(255,35,35,0.7);
+      box-shadow: 0 0 0 4px rgba(255,35,35,0.14);
+      transform: translateY(-1px);
+    }
+
+    .field select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 52px;
+      background-color: rgba(255,255,255,0.05);
+      background-image:
+        linear-gradient(45deg, transparent 50%, #ff6a6a 50%),
+        linear-gradient(135deg, #ff6a6a 50%, transparent 50%),
+        linear-gradient(135deg, rgba(255,35,35,0.18), rgba(255,35,35,0.06));
+      background-position:
+        calc(100% - 22px) calc(50% - 4px),
+        calc(100% - 15px) calc(50% - 4px),
+        calc(100% - 44px) 50%;
+      background-size: 7px 7px, 7px 7px, 30px 30px;
+      background-repeat: no-repeat;
+      border-color: rgba(255,85,85,0.25);
+      color: #fff4f4;
+    }
+
+    .field select option { background: #161616; color: #fff4f4; }
+
+    /* Summary box */
+    .summary-box {
+      padding: 18px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+      display: grid;
+      gap: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      color: #e5d8cf;
+      font-size: 0.95rem;
+    }
+
+    .summary-row strong { color: white; }
+
+    .summary-total {
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 1.1rem;
+    }
+
+    .summary-total strong {
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 1.9rem;
+    }
+
+    /* Status */
+    .status-box {
+      display: none;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+      color: #eadcd2;
+      font-size: 0.96rem;
+      line-height: 1.6;
+    }
+
+    .status-box.show { display: block; }
+    .status-box.error { border-color: rgba(255,140,140,0.35); background: rgba(255,95,95,0.08); }
+    .status-box.success { border-color: rgba(117,255,163,0.35); background: rgba(71,214,115,0.08); }
+
+    /* Receipt Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      background: #0f0f0f;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      width: min(520px, 100%);
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+      animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.92) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .receipt { padding: 32px 32px 24px; }
+
+    .receipt-header {
+      text-align: center;
+      padding-bottom: 22px;
+      border-bottom: 1px dashed rgba(255,255,255,0.15);
+      margin-bottom: 22px;
+    }
+
+    .receipt-logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .receipt-logo {
+      width: 50px; height: 50px;
+      border-radius: 13px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 6px;
+    }
+
+    .receipt-gym-name {
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 1.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+
+    .receipt-gym-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-top: 3px;
+    }
+
+    .receipt-title {
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .receipt-no {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .receipt-rows { display: grid; }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .receipt-row:last-child { border-bottom: none; }
+
+    .receipt-row .rlabel {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.78rem;
+      padding-top: 2px;
+    }
+
+    .receipt-row .rvalue {
+      color: white;
+      text-align: right;
+      font-weight: 600;
+    }
+
+    .receipt-total-row {
+      margin-top: 16px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(71,214,115,0.14), rgba(71,214,115,0.04));
+      border: 1px solid rgba(71,214,115,0.28);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .receipt-total-row .rlabel {
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.8rem;
+    }
+
+    .receipt-total-row .rvalue {
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 2.6rem;
+      color: white;
+      line-height: 1;
+    }
+
+    .receipt-footer {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(255,255,255,0.12);
+      text-align: center;
+    }
+
+    .receipt-footer p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .receipt-stamp {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      background: rgba(71,214,115,0.12);
+      border: 1px solid rgba(71,214,115,0.3);
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 0 32px 28px;
+    }
+
+    /* Footnote */
+    .footnote {
+      padding: 12px 0 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .container { width: min(100%, calc(100% - 20px)); }
+      .topbar-inner { width: min(100%, calc(100% - 20px)); flex-direction: column; align-items: stretch; }
+      .brand { justify-content: center; }
+      .brand-logo { width: 56px; height: 56px; }
+      .nav-links { justify-content: flex-start; }
+      .page-header { padding-top: 16px; }
+      .page-header-inner, .card { padding: 18px; border-radius: 18px; }
+      h1 { font-size: 2.1rem; }
+      .field-grid { grid-template-columns: 1fr; }
+      .modal-actions { grid-template-columns: 1fr; }
+      .receipt { padding: 22px 18px 18px; }
+      .modal-actions { padding: 0 18px 22px; }
+    }
+
+    /* Month Picker */
+    .month-picker-wrap { position: relative; }
+
+    .month-picker-input {
+      width: 100%;
+      padding: 15px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,85,85,0.25);
+      background: rgba(255,255,255,0.05);
+      color: #fff4f4;
+      font: inherit;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      user-select: none;
+    }
+    .month-picker-input:hover,
+    .month-picker-input:focus {
+      border-color: rgba(255,35,35,0.7);
+      box-shadow: 0 0 0 4px rgba(255,35,35,0.14);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .month-picker-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0; right: 0;
+      background: #161616;
+      border: 1px solid rgba(255,85,85,0.3);
+      border-radius: 18px;
+      padding: 18px;
+      z-index: 50;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      animation: dropIn 0.18s ease;
+    }
+    .month-picker-dropdown.open { display: block; }
+
+    @keyframes dropIn {
+      from { opacity:0; transform: translateY(-8px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    .mpd-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .mpd-nav-btn {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      border-radius: 10px;
+      width: 36px; height: 36px;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      font: inherit;
+    }
+    .mpd-nav-btn:hover { background: rgba(255,35,35,0.18); }
+
+    .mpd-year {
+      font-family: "Barlow Condensed", sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.08em;
+      color: white;
+    }
+
+    .mpd-months {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .mpd-month-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #e8ddd6;
+      border-radius: 12px;
+      padding: 10px 6px;
+      font: inherit;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .mpd-month-btn:hover { background: rgba(255,35,35,0.18); border-color: rgba(255,35,35,0.45); color: #fff; }
+    .mpd-month-btn.selected { background: rgba(255,35,35,0.22); border-color: rgba(255,35,35,0.7); color: #fff; font-weight: 700; }
+
+    /* WhatsApp button */
+    .btn-whatsapp {
+      background: linear-gradient(135deg, #25d366, #128c4e 75%);
+      box-shadow: 0 12px 32px rgba(37,211,102,0.28);
+      color: white;
+      border-color: transparent;
+      padding: 15px;
+      font-size: 1rem;
+    }
+
+    /* Print */
+    @media print {
+      body { background: white !important; color: black !important; }
+      body::before { display: none; }
+      .topbar, .form-section, .page-header, .modal-actions, .footnote { display: none !important; }
+      .modal-overlay {
+        display: flex !important;
+        position: static !important;
+        background: none !important;
+        backdrop-filter: none !important;
+        padding: 0 !important;
+      }
+      .modal {
+        border: none !important;
+        box-shadow: none !important;
+        background: white !important;
+        width: 100% !important;
+        max-height: none !important;
+        animation: none !important;
+      }
+      .receipt-gym-name, .receipt-row .rvalue, .receipt-total-row .rvalue { color: black !important; }
+      .receipt-row .rlabel, .receipt-no, .receipt-gym-sub, .receipt-footer p { color: #555 !important; }
+      .receipt-header { border-color: #ccc !important; }
+      .receipt-row { border-color: #eee !important; }
+      .receipt-footer { border-color: #ccc !important; }
+      .receipt-title { color: #996600 !important; }
+      .receipt-total-row { background: #f0faf4 !important; border-color: #28a855 !important; }
+      .receipt-total-row .rlabel { color: #28a855 !important; }
+      .receipt-stamp { color: #28a855 !important; border-color: #28a855 !important; background: #f0faf4 !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <img class="brand-logo" src="ap.JPG" alt="AP Enterprise Gym logo">
+        <div class="brand-text">
+          <strong>AP Enterprise Gym</strong>
+          <small>Build Strength. Transform Yourself.</small>
+        </div>
+      </div>
+      <!-- <div class="nav-links">
+        <a class="btn btn-secondary" href="index.html">← Registration</a>
+        <div class="pill">Fee Payment</div>
+      </div> -->
+    </div>
+  </header>
+
+  <main>
+    <!-- Page header -->
+    <div class="page-header">
+      <div class="container">
+        <div class="page-header-inner">
+          <div class="content-stack">
+            <div class="eyebrow" id="headerEyebrow">Monthly Fee</div>
+            <h1 id="headerTitle">Record a <span class="accent">Payment</span></h1>
+            <p class="lead" id="headerLead">Fill in the member details and submit — a receipt is generated instantly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <section class="form-section">
+      <div class="container">
+        <div class="card">
+          <div class="content-stack" style="margin-bottom:18px;">
+            <div class="eyebrow">Payment Form</div>
+            <h3 id="formTitle">Monthly Fee</h3>
+          </div>
+
+          <!-- Toggle -->
+          <div class="payment-toggle" style="margin-bottom:22px;">
+            <button type="button" class="toggle-btn active-monthly" id="toggleMonthly">Monthly Fee</button>
+            <button type="button" class="toggle-btn" id="toggleReg">Registration Fee</button>
+          </div>
+
+          <form id="paymentForm">
+
+            <!-- ── MONTHLY FEE PANEL ── -->
+            <div class="form-panel active" id="panelMonthly">
+              <div class="field-grid">
+                <div class="field">
+                  <label for="memberName">Member Name</label>
+                  <input id="memberName" type="text" placeholder="Full name" required>
+                </div>
+                <div class="field">
+                  <label for="memberPhone">Phone Number</label>
+                  <input id="memberPhone" type="tel" placeholder="Contact number" required>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="memberCat">Member Type</label>
+                <select id="memberCat">
+                  <option value="student">Student</option>
+                  <option value="general">General</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label>Paying For Month</label>
+                <div class="month-picker-wrap" id="monthPickerWrap">
+                  <div class="month-picker-input" id="monthPickerInput" tabindex="0">
+                    <span id="monthPickerDisplay">Select month</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6a6a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </div>
+                  <div class="month-picker-dropdown" id="monthPickerDropdown">
+                    <div class="mpd-nav">
+                      <button type="button" class="mpd-nav-btn" id="mpdPrevYear">&#8249;</button>
+                      <span class="mpd-year" id="mpdYear">2025</span>
+                      <button type="button" class="mpd-nav-btn" id="mpdNextYear">&#8250;</button>
+                    </div>
+                    <div class="mpd-months" id="mpdMonths"></div>
+                  </div>
+                </div>
+                <input type="hidden" id="payingForMonth">
+              </div>
+
+              <!-- Monthly Summary -->
+              <div class="summary-box">
+                <div class="summary-row">
+                  <span>Member Type</span>
+                  <strong id="sumCat">Student</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Paying For</span>
+                  <strong id="sumMonth">—</strong>
+                </div>
+                <div class="summary-row summary-total">
+                  <span>Amount Due</span>
+                  <strong id="sumFee">&#8377;699</strong>
+                </div>
+              </div>
+            </div><!-- /panelMonthly -->
+
+            <!-- ── REGISTRATION FEE PANEL ── -->
+            <div class="form-panel" id="panelReg">
+              <div class="field-grid">
+                <div class="field">
+                  <label for="regName">Member Name</label>
+                  <input id="regName" type="text" placeholder="Full name">
+                </div>
+                <div class="field">
+                  <label for="regPhone">Phone Number</label>
+                  <input id="regPhone" type="tel" placeholder="Contact number">
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="regCat">Member Type</label>
+                <select id="regCat">
+                  <option value="student">Student</option>
+                  <option value="general">General</option>
+                </select>
+              </div>
+
+              <!-- Registration Summary -->
+              <div class="summary-box">
+                <div class="summary-row">
+                  <span>Member Type</span>
+                  <strong id="regSumCat">Student</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Fee Type</span>
+                  <strong style="color:var(--gold);">Registration</strong>
+                </div>
+                <div class="summary-row summary-total">
+                  <span>Amount Due</span>
+                  <strong style="color:var(--gold);">&#8377;1,000</strong>
+                </div>
+              </div>
+            </div><!-- /panelReg -->
+
+            <button class="btn btn-success" type="button" id="payButton">
+              ✓ &nbsp;Record Payment &amp; Generate Receipt
+            </button>
+
+            <div class="status-box" id="payStatus" aria-live="polite"></div>
+          </form>
+
+          <!-- Hidden sheet submission -->
+          <iframe name="paySheetFrame" id="paySheetFrame" title="Sheet" style="display:none;"></iframe>
+          <form
+            id="paySheetForm"
+            action="PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"
+            method="GET"
+            target="paySheetFrame"
+            style="display:none;"
+          >
+            <input type="hidden" name="timestamp"    id="ps_timestamp">
+            <input type="hidden" name="memberName"   id="ps_memberName">
+            <input type="hidden" name="memberPhone"  id="ps_memberPhone">
+            <input type="hidden" name="memberType"   id="ps_memberType">
+            <input type="hidden" name="planType"     id="ps_planType">
+            <input type="hidden" name="amount"       id="ps_amount">
+            <input type="hidden" name="paymentMonth" id="ps_paymentMonth">
+            <input type="hidden" name="receiptNo"    id="ps_receiptNo">
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footnote">&copy; AP Enterprise Gym</footer>
+</div>
+
+<!-- Receipt Modal -->
+<div class="modal-overlay" id="receiptModal" role="dialog" aria-modal="true" aria-label="Payment Receipt">
+  <div class="modal">
+    <div class="receipt" id="receiptContent">
+
+      <div class="receipt-header">
+        <div class="receipt-logo-wrap">
+          <img class="receipt-logo" src="ap.JPG" alt="AP Enterprise Gym">
+          <div>
+            <div class="receipt-gym-name">AP Enterprise Gym</div>
+            <div class="receipt-gym-sub">Build Strength. Transform Yourself.</div>
+          </div>
+        </div>
+        <div class="receipt-title">Payment Receipt</div>
+        <div class="receipt-no" id="rReceiptNo">Receipt #—</div>
+      </div>
+
+      <div class="receipt-rows">
+        <div class="receipt-row">
+          <span class="rlabel">Member Name</span>
+          <span class="rvalue" id="rName">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rlabel">Phone</span>
+          <span class="rvalue" id="rPhone">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rlabel">Member Type</span>
+          <span class="rvalue" id="rType">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rlabel" id="rMonthLabel">Paying For</span>
+          <span class="rvalue" id="rMonth">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rlabel">Date &amp; Time</span>
+          <span class="rvalue" id="rDateTime">—</span>
+        </div>
+      </div>
+
+      <div class="receipt-total-row">
+        <span class="rlabel">Amount Paid</span>
+        <span class="rvalue" id="rAmount">—</span>
+      </div>
+
+      <div class="receipt-footer">
+        <p>Tadubi Bazaar, Dohu Colony, Near Old Petrol Pump<br>
+           Senapati District, Manipur – 795104 &nbsp;|&nbsp;
+           <a href="tel:+918810699710">+91-8810699710</a></p>
+        <div class="receipt-stamp">✓ Payment Recorded</div>
+      </div>
+
+    </div><!-- /receipt -->
+
+    <div class="modal-actions" style="grid-template-columns:1fr 1fr;">
+      <button class="btn btn-print" id="printBtn">🖨&nbsp; Print Receipt</button>
+      <button class="btn btn-new"   id="newPaymentBtn">+ New Payment</button>
+    </div>
+    <div style="padding: 0 32px 28px; margin-top: -10px;">
+      <button class="btn btn-whatsapp" id="whatsappBtn" style="width:100%;">
+        <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.65 4.83 1.787 6.86L2 30l7.34-1.772A13.936 13.936 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.4a11.36 11.36 0 01-5.79-1.58l-.415-.247-4.352 1.05 1.077-4.24-.27-.434A11.4 11.4 0 1116 27.4zm6.27-8.54c-.345-.172-2.04-1.005-2.356-1.12-.317-.115-.547-.172-.778.172-.23.345-.892 1.12-1.094 1.35-.2.23-.403.258-.748.086-.345-.173-1.457-.537-2.775-1.712-1.025-.915-1.718-2.044-1.92-2.39-.2-.345-.021-.532.15-.703.155-.155.345-.402.518-.604.172-.2.23-.345.345-.575.114-.23.057-.432-.029-.604-.086-.172-.778-1.875-1.065-2.566-.28-.672-.564-.58-.778-.59l-.662-.012c-.23 0-.604.086-.92.432-.316.345-1.208 1.18-1.208 2.878 0 1.698 1.237 3.34 1.41 3.57.172.23 2.436 3.72 5.9 5.215.825.356 1.47.568 1.972.727.828.263 1.582.226 2.178.137.665-.1 2.04-.833 2.328-1.638.287-.805.287-1.495.2-1.638-.086-.143-.317-.23-.662-.402z"/></svg>
+        &nbsp; Send via WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const pricing = { student: 699, general: 899, reg: 1000 };
+
+  let currentMode = "monthly";
+
+  const memberCat      = document.getElementById("memberCat");
+  const regCat         = document.getElementById("regCat");
+  const payingForMonth = document.getElementById("payingForMonth");
+  const sumCat         = document.getElementById("sumCat");
+  const sumMonth       = document.getElementById("sumMonth");
+  const sumFee         = document.getElementById("sumFee");
+  const regSumCat      = document.getElementById("regSumCat");
+  const payButton      = document.getElementById("payButton");
+  const payStatus      = document.getElementById("payStatus");
+  const paySheetForm   = document.getElementById("paySheetForm");
+  const paySheetFrame  = document.getElementById("paySheetFrame");
+  const receiptModal   = document.getElementById("receiptModal");
+
+  let waitingForSheet = false;
+  let pendingEntry    = null;
+  let receiptCounter  = 1;
+  let lastEntry       = null;
+
+  function fmt(n) { return "\u20B9" + Number(n).toLocaleString("en-IN"); }
+
+  /* ── Toggle ── */
+  const toggleMonthly = document.getElementById("toggleMonthly");
+  const toggleReg     = document.getElementById("toggleReg");
+  const panelMonthly  = document.getElementById("panelMonthly");
+  const panelReg      = document.getElementById("panelReg");
+  const headerEyebrow = document.getElementById("headerEyebrow");
+  const headerTitle   = document.getElementById("headerTitle");
+  const headerLead    = document.getElementById("headerLead");
+  const formTitle     = document.getElementById("formTitle");
+
+  function switchMode(mode) {
+    currentMode = mode;
+    if (mode === "monthly") {
+      panelMonthly.classList.add("active");
+      panelReg.classList.remove("active");
+      toggleMonthly.classList.add("active-monthly");
+      toggleMonthly.classList.remove("active-reg");
+      toggleReg.classList.remove("active-monthly","active-reg");
+      headerEyebrow.textContent = "Monthly Fee";
+      headerTitle.innerHTML = 'Record a <span class="accent">Payment</span>';
+      headerLead.textContent = "Fill in the member details and submit — a receipt is generated instantly.";
+      formTitle.textContent = "Monthly Fee";
+      payButton.innerHTML = "\u2713 &nbsp;Record Payment &amp; Generate Receipt";
+    } else {
+      panelReg.classList.add("active");
+      panelMonthly.classList.remove("active");
+      toggleReg.classList.add("active-reg");
+      toggleReg.classList.remove("active-monthly");
+      toggleMonthly.classList.remove("active-monthly","active-reg");
+      headerEyebrow.textContent = "Registration Fee";
+      headerTitle.innerHTML = 'New <span class="accent">Registration</span>';
+      headerLead.textContent = "Record a new member registration — receipt generated on submit.";
+      formTitle.textContent = "Registration Fee";
+      payButton.innerHTML = "\u2713 &nbsp;Record Registration &amp; Generate Receipt";
+    }
+    payStatus.className = "status-box";
+  }
+
+  toggleMonthly.addEventListener("click", () => switchMode("monthly"));
+  toggleReg.addEventListener("click",     () => switchMode("reg"));
+
+  /* ── Month Picker ── */
+  const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const MONTHS_FULL = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+  const now0       = new Date();
+  let pickerYear   = now0.getFullYear();
+  let pickerMonth  = now0.getMonth(); // 0-indexed, currently selected
+  let pickerSet    = false;
+
+  const pickerInput    = document.getElementById("monthPickerInput");
+  const pickerDropdown = document.getElementById("monthPickerDropdown");
+  const pickerDisplay  = document.getElementById("monthPickerDisplay");
+  const mpdYear        = document.getElementById("mpdYear");
+  const mpdMonths      = document.getElementById("mpdMonths");
+
+  function buildMonthGrid() {
+    mpdYear.textContent = pickerYear;
+    mpdMonths.innerHTML = "";
+    MONTHS.forEach((m, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "mpd-month-btn";
+      btn.textContent = m;
+      const thisLabel = MONTHS_FULL[i] + " " + pickerYear;
+      if (pickerSet && thisLabel === payingForMonth.value) btn.classList.add("selected");
+      btn.addEventListener("click", () => {
+        pickerMonth = i;
+        const label = MONTHS_FULL[i] + " " + pickerYear;
+        payingForMonth.value = label;
+        pickerDisplay.textContent = label;
+        pickerSet = true;
+        pickerDropdown.classList.remove("open");
+        updateMonthlySummary();
+        buildMonthGrid();
+      });
+      mpdMonths.appendChild(btn);
+    });
+  }
+
+  // Set default to current month
+  (function initPicker() {
+    const label = MONTHS_FULL[now0.getMonth()] + " " + now0.getFullYear();
+    payingForMonth.value     = label;
+    pickerDisplay.textContent = label;
+    pickerSet = true;
+    buildMonthGrid();
+  })();
+
+  pickerInput.addEventListener("click", () => {
+    pickerDropdown.classList.toggle("open");
+    buildMonthGrid();
+  });
+  pickerInput.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") pickerDropdown.classList.toggle("open");
+  });
+
+  document.getElementById("mpdPrevYear").addEventListener("click", () => {
+    pickerYear--; buildMonthGrid();
+  });
+  document.getElementById("mpdNextYear").addEventListener("click", () => {
+    pickerYear++; buildMonthGrid();
+  });
+
+  // Close picker on outside click
+  document.addEventListener("click", e => {
+    if (!document.getElementById("monthPickerWrap").contains(e.target)) {
+      pickerDropdown.classList.remove("open");
+    }
+  });
+
+  /* ── Summary ── */
+  function updateMonthlySummary() {
+    const cat = memberCat.value;
+    sumCat.textContent   = cat === "student" ? "Student" : "General";
+    sumMonth.textContent = payingForMonth.value || "—";
+    sumFee.textContent   = fmt(pricing[cat]);
+  }
+
+  memberCat.addEventListener("change", updateMonthlySummary);
+  regCat.addEventListener("change", () => {
+    regSumCat.textContent = regCat.value === "student" ? "Student" : "General";
+  });
+  updateMonthlySummary();
+
+  function showStatus(msg, kind) {
+    payStatus.textContent = msg;
+    payStatus.className = "status-box show " + kind;
+  }
+
+  function setSubmitting(v) {
+    payButton.disabled    = v;
+    payButton.textContent = v ? "Recording..." : "\u2713  Record Payment & Generate Receipt";
+  }
+
+  function fillReceipt(entry) {
+    document.getElementById("rReceiptNo").textContent  = "Receipt #" + entry.receiptNo;
+    document.getElementById("rName").textContent       = entry.memberName;
+    document.getElementById("rPhone").textContent      = entry.memberPhone;
+    document.getElementById("rType").textContent       = entry.memberType;
+    document.getElementById("rMonthLabel").textContent = entry.mode === "reg" ? "Fee Type" : "Paying For";
+    document.getElementById("rMonth").textContent      = entry.mode === "reg" ? "Registration Fee" : entry.paymentMonth;
+    document.getElementById("rDateTime").textContent   = entry.dateTimeLabel;
+    document.getElementById("rAmount").textContent     = fmt(entry.amount);
+  }
+
+  function generateReceiptNo() {
+    const d   = new Date();
+    const pad = n => String(n).padStart(2, "0");
+    return "AP" + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate())
+           + "-" + String(receiptCounter++).padStart(3, "0");
+  }
+
+  function showReceipt(entry) {
+    lastEntry = entry;
+    fillReceipt(entry);
+    receiptModal.classList.add("show");
+  }
+
+  function resetForm() {
+    document.getElementById("paymentForm").reset();
+    memberCat.value = "student";
+    regCat.value    = "student";
+    const label = MONTHS_FULL[now0.getMonth()] + " " + now0.getFullYear();
+    payingForMonth.value      = label;
+    pickerDisplay.textContent = label;
+    pickerYear  = now0.getFullYear();
+    pickerMonth = now0.getMonth();
+    pickerSet   = true;
+    buildMonthGrid();
+    updateMonthlySummary();
+    regSumCat.textContent   = "Student";
+    payStatus.className = "status-box";
+  }
+
+  payButton.addEventListener("click", function () {
+    let name, phone;
+
+    if (currentMode === "monthly") {
+      name  = document.getElementById("memberName").value.trim();
+      phone = document.getElementById("memberPhone").value.trim();
+      const month = payingForMonth.value;
+      if (!name)  { showStatus("Please enter the member name.", "error");  return; }
+      if (!phone) { showStatus("Please enter the phone number.", "error"); return; }
+      if (!month) { showStatus("Please select a month.", "error");         return; }
+    } else {
+      name  = document.getElementById("regName").value.trim();
+      phone = document.getElementById("regPhone").value.trim();
+      if (!name)  { showStatus("Please enter the member name.", "error");  return; }
+      if (!phone) { showStatus("Please enter the phone number.", "error"); return; }
+    }
+
+    const cat = currentMode === "monthly" ? memberCat.value : regCat.value;
+    const amt = currentMode === "monthly" ? pricing[cat] : pricing.reg;
+    const now = new Date();
+    const dateTimeLabel =
+      now.toLocaleDateString("en-IN", { day:"2-digit", month:"short", year:"numeric" })
+      + " \u00B7 "
+      + now.toLocaleTimeString("en-IN", { hour:"2-digit", minute:"2-digit" });
+
+    const entry = {
+      mode:         currentMode,
+      timestamp:    now.toISOString(),
+      dateTimeLabel,
+      memberName:   name,
+      memberPhone:  phone,
+      memberType:   cat === "student" ? "Student" : "General",
+      amount:       amt,
+      paymentMonth: currentMode === "monthly" ? payingForMonth.value : "Registration Fee",
+      receiptNo:    generateReceiptNo()
+    };
+
+    const scriptAction = paySheetForm.getAttribute("action");
+    if (scriptAction.includes("PASTE_YOUR")) {
+      showReceipt(entry);
+      showStatus(
+        "\u26A0\uFE0F Receipt generated. Add your Google Apps Script URL to also save to Google Sheets.",
+        "success"
+      );
+      resetForm();
+      return;
+    }
+
+    setSubmitting(true);
+    showStatus("Recording payment...", "success");
+
+    document.getElementById("ps_timestamp").value    = entry.timestamp;
+    document.getElementById("ps_memberName").value   = entry.memberName;
+    document.getElementById("ps_memberPhone").value  = entry.memberPhone;
+    document.getElementById("ps_memberType").value   = entry.memberType;
+    document.getElementById("ps_amount").value       = entry.amount;
+    document.getElementById("ps_paymentMonth").value = entry.paymentMonth;
+    document.getElementById("ps_receiptNo").value    = entry.receiptNo;
+
+    pendingEntry    = entry;
+    waitingForSheet = true;
+    paySheetForm.submit();
+  });
+
+  paySheetFrame.addEventListener("load", function () {
+    if (!waitingForSheet) return;
+    waitingForSheet = false;
+    setSubmitting(false);
+    showReceipt(pendingEntry);
+    resetForm();
+    pendingEntry = null;
+  });
+
+  document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+  document.getElementById("newPaymentBtn").addEventListener("click", () => {
+    receiptModal.classList.remove("show");
+  });
+
+  /* ── WhatsApp — open chat only, no pre-filled text ── */
+  document.getElementById("whatsappBtn").addEventListener("click", function () {
+    if (!lastEntry) return;
+    let raw = lastEntry.memberPhone.replace(/\D/g, "");
+    if (raw.length === 10) raw = "91" + raw;
+    window.open("https://wa.me/" + raw, "_blank");
+  });
+
+  receiptModal.addEventListener("click", e => {
+    if (e.target === receiptModal) receiptModal.classList.remove("show");
+  });
+</script>
+</body>
+</html>

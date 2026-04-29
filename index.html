@@ -547,6 +547,20 @@
       letter-spacing: 0.12em;
     }
 
+    .receipt-thankyou {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.65;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+      padding-top: 12px;
+    }
+    .receipt-thankyou span {
+      font-style: italic;
+      font-size: 0.73rem;
+      opacity: 0.75;
+    }
+
     .modal-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -688,7 +702,7 @@
     @media print {
       body { background: white !important; color: black !important; }
       body::before { display: none; }
-      .topbar, .form-section, .page-header, .modal-actions, .footnote { display: none !important; }
+      .topbar, .form-section, .page-header, .modal-actions, .footnote, #whatsappBtnWrap { display: none !important; }
       .modal-overlay {
         display: flex !important;
         position: static !important;
@@ -713,6 +727,8 @@
       .receipt-total-row { background: #f0faf4 !important; border-color: #28a855 !important; }
       .receipt-total-row .rlabel { color: #28a855 !important; }
       .receipt-stamp { color: #28a855 !important; border-color: #28a855 !important; background: #f0faf4 !important; }
+      .receipt-thankyou { color: #555 !important; border-color: #ccc !important; }
+      .receipt-thankyou span { color: #777 !important; }
     }
   </style>
 </head>
@@ -728,10 +744,6 @@
           <strong>AP Enterprise Gym</strong>
           <small>Build Strength. Transform Yourself.</small>
         </div>
-      </div>
-      <div class="nav-links">
-        <a class="btn btn-secondary" href="index.html">← Registration</a>
-        <div class="pill">Fee Payment</div>
       </div>
     </div>
   </header>
@@ -945,6 +957,10 @@
            Senapati District, Manipur – 795104 &nbsp;|&nbsp;
            <a href="tel:+918810699710">+91-8810699710</a></p>
         <div class="receipt-stamp">✓ Payment Recorded</div>
+        <div class="receipt-thankyou">
+          Thank you for choosing us.<br>
+          <span>This is a computer generated receipt and does not require a signature.</span>
+        </div>
       </div>
 
     </div><!-- /receipt -->
@@ -953,11 +969,10 @@
       <button class="btn btn-print" id="printBtn">🖨&nbsp; Print Receipt</button>
       <button class="btn btn-new"   id="newPaymentBtn">+ New Payment</button>
     </div>
-    <div style="padding: 0 32px 28px; margin-top: -10px;">
+    <div style="padding: 0 32px 28px; margin-top: -10px;" id="whatsappBtnWrap">
       <button class="btn btn-whatsapp" id="whatsappBtn" style="width:100%;">
         <svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.49.65 4.83 1.787 6.86L2 30l7.34-1.772A13.936 13.936 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.4a11.36 11.36 0 01-5.79-1.58l-.415-.247-4.352 1.05 1.077-4.24-.27-.434A11.4 11.4 0 1116 27.4zm6.27-8.54c-.345-.172-2.04-1.005-2.356-1.12-.317-.115-.547-.172-.778.172-.23.345-.892 1.12-1.094 1.35-.2.23-.403.258-.748.086-.345-.173-1.457-.537-2.775-1.712-1.025-.915-1.718-2.044-1.92-2.39-.2-.345-.021-.532.15-.703.155-.155.345-.402.518-.604.172-.2.23-.345.345-.575.114-.23.057-.432-.029-.604-.086-.172-.778-1.875-1.065-2.566-.28-.672-.564-.58-.778-.59l-.662-.012c-.23 0-.604.086-.92.432-.316.345-1.208 1.18-1.208 2.878 0 1.698 1.237 3.34 1.41 3.57.172.23 2.436 3.72 5.9 5.215.825.356 1.47.568 1.972.727.828.263 1.582.226 2.178.137.665-.1 2.04-.833 2.328-1.638.287-.805.287-1.495.2-1.638-.086-.143-.317-.23-.662-.402z"/></svg>
-        &nbsp; Thank you for chossing us. <br>
-        This is a computer generated receipt and does not require a signature.
+        &nbsp; Send via WhatsApp
       </button>
     </div>
   </div>
@@ -983,7 +998,7 @@
 
   let waitingForSheet = false;
   let pendingEntry    = null;
-  let receiptCounter  = 1;
+  let receiptCounter  = parseInt(localStorage.getItem("apgym_receipt_counter") || "1");
   let lastEntry       = null;
 
   function fmt(n) { return "\u20B9" + Number(n).toLocaleString("en-IN"); }
@@ -1137,8 +1152,11 @@
   function generateReceiptNo() {
     const d   = new Date();
     const pad = n => String(n).padStart(2, "0");
-    return "AP" + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate())
-           + "-" + String(receiptCounter++).padStart(3, "0");
+    const no  = "AP" + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate())
+                + "-" + String(receiptCounter).padStart(3, "0");
+    receiptCounter++;
+    localStorage.setItem("apgym_receipt_counter", receiptCounter);
+    return no;
   }
 
   function showReceipt(entry) {
@@ -1251,7 +1269,7 @@
     const isReg = lastEntry.mode === "reg";
     const msg =
 `🏋️ *AP Enterprise Gym*
-━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━
 *${isReg ? "Registration Receipt" : "Payment Receipt"}*
 Receipt No: ${lastEntry.receiptNo}
 ━━━━━━━━━━━━━━
